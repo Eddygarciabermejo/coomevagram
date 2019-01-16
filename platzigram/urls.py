@@ -1,19 +1,11 @@
 """ Platzigram URLs module """
+
 from django.contrib import admin
 from django.urls import path
-from django.http import HttpResponse
-
-
-def hello_world(request):
-    """
-    Return a greeting.
-    :param: request
-    :return: String with a message.
-    """
-    return HttpResponse('Hello, world!')
-
+from platzigram import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello-world/', hello_world),
+    path('current-server-time/', views.current_server_time),
+    path('order-numbers/', views.order_numbers)
 ]
