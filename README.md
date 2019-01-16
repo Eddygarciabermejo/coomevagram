@@ -1,0 +1,2 @@
+# platzigram
+Platzi - Django - Platzigram
