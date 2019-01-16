@@ -24,12 +24,13 @@ def order_numbers(request):
     :return: json
 
     http://localhost:8000/order-numbers/?numbers=5,4,1
-    ["1", "4", "5"]
+    {"order_numbers": [1, 4, 5]}
     """
 
     # Define un Debug en consola al momento de realizar la petición.
     # pdb.set_trace()
 
-    numbers = sorted(request.GET['numbers'].split(','))
+    numbers_order = map(lambda x: int(x), request.GET['numbers'].split(','))
+    json = {"order_numbers": sorted(numbers_order)}
 
-    return HttpResponse(JsonResponse(numbers, safe=False))
+    return JsonResponse(json, safe=False)
