@@ -1,6 +1,7 @@
 """ Platzigram views module """
 
 import pdb
+import json
 
 from django.http import HttpResponse, JsonResponse
 from datetime import datetime
@@ -30,7 +31,19 @@ def order_numbers(request):
     # Define un Debug en consola al momento de realizar la petición.
     # pdb.set_trace()
 
+    # Forma 1
     numbers_order = map(lambda x: int(x), request.GET['numbers'].split(','))
-    json = {"order_numbers": sorted(numbers_order)}
+    # Forma 2
+    # numbers_order = [int(i) for i in request.GET['numbers'].split(',')]
 
-    return JsonResponse(json, safe=False)
+    data = {
+        'status': 'ok',
+        'numbers': sorted(numbers_order),
+        'message': 'Integers sorted successfully.'
+    }
+
+    # Forma 1
+    # return JsonResponse(data=data, safe=False)
+    # Forma 2
+    return HttpResponse(json.dumps(data, indent=4), content_type='application/json')
+
