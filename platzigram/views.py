@@ -20,7 +20,7 @@ def current_server_time(request):
 
 def order_numbers(request):
     """
-    Return order numbers.
+    Return a JSON response with sorted integer.
     :param: request
     :return: json
 
@@ -47,3 +47,22 @@ def order_numbers(request):
     # Forma 2
     return HttpResponse(json.dumps(data, indent=4), content_type='application/json')
 
+
+def say_hi(request, name, age):
+    """
+    Return a welcome message or block.
+    Envía parámetros posicionales según el tipo definido en la url.
+    :param request:
+    :param name:
+    :param age:
+    :return:
+
+    http://localhost:8000/hi/Yesica/11/
+    """
+
+    if age < 12:
+        message = 'Sorry {}, you are not allowed here!'.format(name)
+    else:
+        message = 'Hello, {}! Welcome to Platzigram!'.format(name)
+
+    return HttpResponse(message)
