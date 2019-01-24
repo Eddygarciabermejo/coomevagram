@@ -13,6 +13,7 @@ def current_server_time(request):
     :param: request
     :return: String with a message.
     """
+
     now = datetime.now().strftime('%b %dth, %Y - %H:%M hrs')
 
     return HttpResponse('Oh, hi! Current server time is {now}'.format(now=now))
@@ -53,8 +54,8 @@ def say_hi(request, name, age):
     Return a welcome message or block.
     Envía parámetros posicionales según el tipo definido en la url.
     :param request:
-    :param name:
-    :param age:
+    :param name: Yesica
+    :param age: 11
     :return:
 
     http://localhost:8000/hi/Yesica/11/
