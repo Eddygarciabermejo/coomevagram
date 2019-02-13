@@ -144,3 +144,8 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+
+# Login Required
+# https://docs.djangoproject.com/en/2.0/topics/auth/default/#the-login-required-decorator
+LOGIN_URL = '/users/login/'

@@ -1,5 +1,6 @@
 """ Posts views """
 
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from datetime import datetime
@@ -35,5 +36,6 @@ posts = [
 ]
 
 
+@login_required
 def list_posts(request):
     return render(request, 'posts/feed.html', {'posts': posts})
