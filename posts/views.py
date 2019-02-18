@@ -38,4 +38,9 @@ posts = [
 
 @login_required
 def list_posts(request):
+    """
+    Send a dictionary of posts to visualize them in the template.
+    :param request:
+    :return: render to feed template.
+    """
     return render(request, 'posts/feed.html', {'posts': posts})
