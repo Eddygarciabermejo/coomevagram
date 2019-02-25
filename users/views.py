@@ -1,11 +1,12 @@
 """ Users views """
-
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 
+from users.forms import ProfileForm
 from users.models import Profile
 
 
@@ -80,7 +81,28 @@ def update_profile(request):
     :param request:
     :return: update_profile template.
     """
-
     profile = request.user.profile
 
-    return render(request=request, template_name='users/update_profile.html', context={'profile': profile, 'user': request.user})
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+
+            profile.picture = data['picture']
+            profile.website = data['website']
+            profile.biography = data['biography']
+            profile.phone_number = data['phone_number']
+            profile.save()
+
+            messages.success(request, 'Profile updated correctly')
+            return redirect('update_profile')
+    else:
+        form = ProfileForm()
+
+    context = {
+        'profile': profile,
+        'user': request.user,
+        'form': form
+    }
+
+    return render(request=request, template_name='users/update_profile.html', context=context)
