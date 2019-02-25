@@ -5,5 +5,34 @@
 {% endblock %}
 
 {% block container %}
-    <h1 class="mt-5">@{{ request.user.username }}</h1>
+    {% load static %}
+	<div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-6 p-4" id="profile-box">
+				<form action="">
+					<div class="media">
+						<img src="{% static 'img/default-profile.png' %}" class="rounded-circle" height="50" />
+						<div class="media-body">
+							<h5 class="ml-4">@{{ user.username }} | {{ user.get_full_name }}</h5>
+            				<p class="ml-4"><input type="file" name="picture" required="true"></p>
+						</div>
+					</div>
+					<hr><br>
+					<div class="form-group">
+						<label for="website">Website</label>
+						<input type="url" class="form-control" name="website" placeholder="Website" value="{{ profile.website }}" />
+					</div>
+					<div class="form-group">
+						<label for="biography">Biography</label>
+						<textarea name="biography" class="form-control" cols="30" rows="10">{{ profile.biography }}</textarea>
+					</div>
+					<div class="form-group">
+						<label for="phone_number">Phone number</label>
+						<input type="text" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ profile.phone_number }}" />
+					</div>
+					<button type="submit" class="btn btn-primary btn-block mt-5">Update Info</button>
+				</form>
+			</div>
+		</div>
+	</div>
 {% endblock %}

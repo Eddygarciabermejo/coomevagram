@@ -75,4 +75,12 @@ def signup_view(request):
 
 
 def update_profile(request):
-    return render(request, 'users/update_profile.html')
+    """
+    Call the template to update a user's profile.
+    :param request:
+    :return: update_profile template.
+    """
+
+    profile = request.user.profile
+
+    return render(request=request, template_name='users/update_profile.html', context={'profile': profile, 'user': request.user})
