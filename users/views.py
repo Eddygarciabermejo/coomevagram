@@ -75,6 +75,7 @@ def signup_view(request):
     return render(request, 'users/signup.html')
 
 
+@login_required
 def update_profile(request):
     """
     Call the template to update a user's profile.

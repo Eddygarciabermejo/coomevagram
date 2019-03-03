@@ -1,9 +1,11 @@
 """ Posts views """
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from datetime import datetime
+
+from posts.forms import PostForm
 
 posts = [
     {
@@ -44,3 +46,27 @@ def list_posts(request):
     :return: render to feed template.
     """
     return render(request, 'posts/feed.html', {'posts': posts})
+
+
+@login_required
+def create_post(request):
+    """
+    Create a new post based on the Django Form.
+    :param request:
+    :return: render to feed template with post created.
+    """
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('feed')
+    else:
+        form = PostForm()
+
+    context = {
+        'profile': request.user.profile,
+        'user': request.user,
+        'form': form
+    }
+
+    return render(request=request, template_name='posts/new.html', context=context)

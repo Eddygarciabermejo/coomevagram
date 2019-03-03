@@ -1,10 +1,10 @@
-""" Users forms"""
+""" Users forms """
 from django import forms
 
 
 class ProfileForm(forms.Form):
     """
-    Based on the model, the fields that will be used in the form are placed.
+    The fields are the names defined in the template manually and will be stored in the model.
     """
 
     website = forms.URLField(max_length=200, required=False)
