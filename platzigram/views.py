@@ -4,6 +4,7 @@ import pdb
 import json
 
 from django.http import HttpResponse, JsonResponse
+from django.utils.translation import ugettext as _
 from datetime import datetime
 
 
@@ -16,7 +17,7 @@ def current_server_time(request):
 
     now = datetime.now().strftime('%b %dth, %Y - %H:%M hrs')
 
-    return HttpResponse('Oh, hi! Current server time is {now}'.format(now=now))
+    return HttpResponse(_('Oh, hi! Current server time is {now}').format(now=now))
 
 
 def order_numbers(request):

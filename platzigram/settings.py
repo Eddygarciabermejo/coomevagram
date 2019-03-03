@@ -49,6 +49,7 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -122,6 +123,17 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# The spanish language must be defined in the browser as main.
+from django.utils.translation import ugettext_lazy as _
+LANGUAGES = [
+  ('es-co', _('Spanish (Colombia)')),
+  ('en', _('English')),
+]
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 
 # Static files (CSS, JavaScript, Images)
