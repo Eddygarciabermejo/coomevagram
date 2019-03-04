@@ -18,7 +18,9 @@ class ProfileForm(forms.Form):
 
 class SignupForm(forms.Form):
     username = forms.CharField(min_length=4, max_length=50)
-    password = forms.CharField(max_length=70, widget=forms.PasswordInput())
+    password = forms.CharField(max_length=70,
+                               widget=forms.PasswordInput(
+                                   attrs={'class': 'form-control', 'placeholder': 'Password'}))
     password_confirmation = forms.CharField(max_length=70, widget=forms.PasswordInput())
 
     first_name = forms.CharField(min_length=2, max_length=50)
