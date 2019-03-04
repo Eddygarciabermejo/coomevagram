@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 
-from users.forms import ProfileForm
+from users.forms import ProfileForm, SignupForm
 from users.models import Profile
 
 
@@ -49,30 +49,18 @@ def signup_view(request):
     :return: feed template or signup template with error.
     """
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirmation = request.POST['password_confirmation']
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = SignupForm()
 
-        if password != password_confirmation:
-            return render(request, 'users/signup.html', {'error': 'Password does not match'})
+    context = {
+        'form': form
+    }
 
-        try:
-            user = User.objects.create_user(username=username, password=password)
-        except IntegrityError:
-            return render(request, 'users/signup.html', {'error': 'Username is already in user'})
-
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        user.save()
-
-        profile = Profile(user=user)
-        profile.save()
-
-        login(request, user)
-        return redirect('feed')
-
-    return render(request, 'users/signup.html')
+    return render(request=request, template_name='users/signup.html', context=context)
 
 
 @login_required
