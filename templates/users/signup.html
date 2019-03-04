@@ -9,11 +9,11 @@
         <p class="alert alert-danger">{{ error }}</p>
     {% endif %}
 
-    <form action="{% url "signup" %}" method="POST">
+    <form action="{% url 'signup' %}" method="POST">
         {% csrf_token %}
 
         <div class="form-group">
-        	<input type="text" class="form-control" name="username" placeholder="Username" required="true" />
+            <input type="text" class="form-control" name="username" placeholder="Username" required="true" />
         </div>
         <div class="form-group">
             <input type="password" class="form-control" name="password" placeholder="Password" required="true" />
@@ -22,13 +22,13 @@
             <input type="password" class="form-control" name="password_confirmation" placeholder="Password confirmation" required="true" />
         </div>
         <div class="form-group">
-        	<input type="text" class="form-control" name="first_name" placeholder="First name" required="true" />
+            <input type="text" class="form-control" name="first_name" placeholder="First name" required="true" />
         </div>
         <div class="form-group">
-        	<input type="text" class="form-control" name="last_name" placeholder="Last name" required="true" />
+            <input type="text" class="form-control" name="last_name" placeholder="Last name" required="true" />
         </div>
         <div class="form-group">
-        	<input type="email" class="form-control" name="email" placeholder="Email address" required="true" />
+            <input type="email" class="form-control" name="email" placeholder="Email address" required="true" />
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-5">Register</button>
     </form>

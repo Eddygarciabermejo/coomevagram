@@ -6,10 +6,10 @@
 
 {% block container %}
     {% load static %}
-	<div class="container">
-		<div class="row justify-content-md-center">
-			<div class="col-6 p-4" id="profile-box">
-				<form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-6 p-4" id="profile-box">
+                <form action="{% url 'update_profile' %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% for message in messages %}
                         <p class="alert alert-success">{{ message }}</p>
@@ -24,18 +24,18 @@
                             <h5 class="ml-4">@{{ user.username }} | {{ user.get_full_name }}</h5>
                             <p class="ml-4"><input type="file" name="picture"></p>
                         </div>
-					</div>
+                    </div>
                     {% for error in form.picture.errors %}
                         <div class="alert alert-danger">
                             <b>Picture: </b>{{ error }}
                         </div>
                     {% endfor %}
 
-					<hr><br>
+                    <hr><br>
 
                     <div class="form-group">
-						<label for="website">Website</label>
-						{# Se cambia el type url por text, para que no realice la validación por html5 #}
+                        <label for="website">Website</label>
+                        {# Se cambia el type url por text, para que no realice la validación por html5 #}
                         <input
                             type="text"
                             class="form-control {% if form.website.errors %}is-invalid{% endif %}"
@@ -45,11 +45,11 @@
                             value="{% if form.errors %}{{ form.website.value }}{% else %}{{ profile.website }}{% endif %}" />
                         <div class="invalid-feedback">
                             {% for error in form.website.errors %}{{ error }}{% endfor %}
-                        </div>                    
-					</div>
-					<div class="form-group">
-						<label for="biography">Biography</label>
-						<textarea
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="biography">Biography</label>
+                        <textarea
                             name="biography"
                             class="form-control {% if form.biography.errors %}is-invalid{% endif %}"
                             cols="30"
@@ -57,10 +57,10 @@
                         <div class="invalid-feedback">
                             {% for error in form.biography.errors %}{{ error }}{% endfor %}
                         </div>
-					</div>
-					<div class="form-group">
-						<label for="phone_number">Phone number</label>
-						<input
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number">Phone number</label>
+                        <input
                             type="text"
                             class="form-control {% if form.phone_number.errors %}is-invalid{% endif %}"
                             name="phone_number"
@@ -69,10 +69,10 @@
                         <div class="invalid-feedback">
                             {% for error in form.phone_number.errors %}{{ error }}{% endfor %}
                         </div>
-					</div>
-					<button type="submit" class="btn btn-primary btn-block mt-5">Update Info</button>
-				</form>
-			</div>
-		</div>
-	</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-5">Update Info</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
