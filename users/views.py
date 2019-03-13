@@ -2,12 +2,9 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db import IntegrityError
 from django.shortcuts import render, redirect
 
 from users.forms import ProfileForm, SignupForm
-from users.models import Profile
 
 
 def login_view(request):
@@ -23,7 +20,7 @@ def login_view(request):
 
         if user:
             login(request, user)
-            return redirect('feed')
+            return redirect('posts:feed')
         else:
             return render(request, 'users/login.html', {'error': 'Invalid username and password'})
 
@@ -39,7 +36,7 @@ def logout_view(request):
     """
     logout(request)
 
-    return redirect('login')
+    return redirect('users:login')
 
 
 def signup_view(request):
@@ -52,7 +49,7 @@ def signup_view(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect('users:login')
     else:
         form = SignupForm()
 
@@ -84,7 +81,7 @@ def update_profile(request):
             profile.save()
 
             messages.success(request, 'Profile updated correctly')
-            return redirect('update_profile')
+            return redirect('users:update_profile')
     else:
         form = ProfileForm()
 

@@ -26,9 +26,9 @@ class ProfileCompletionMiddleware:
             profile = request.user.profile
             if not profile.picture or not profile.biography:
                 # El método reverse() trae a través del nombre la url.
-                if request.path not in [reverse('update_profile'), reverse('logout')] \
+                if request.path not in [reverse('users:update_profile'), reverse('users:logout')] \
                         and not request.path.startswith('/admin/'):
-                    return redirect('update_profile')
+                    return redirect('users:update_profile')
 
         # Si el usuario ya tiene en su perfil su foto y biografía, puede seguir el flujo normal,
         # incluso visualizar los posts.
