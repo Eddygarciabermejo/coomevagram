@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <a href="{% url 'posts:detail' post.id %}">
+                <a href="{% url 'posts:detail' post.pk %}">
                     <img style="width: 100%;" src="{{ post.photo.url }}" alt="{{ post.title }}">
                 </a>
 

@@ -46,10 +46,10 @@ posts = [
 class PostsFeedView(LoginRequiredMixin, ListView):
     """ Return all published posts """
 
-    template_name = 'posts/feed.html'
     model = Post
     ordering = ('-created', )
     paginate_by = 2
+    template_name = 'posts/feed.html'
     context_object_name = 'posts'
 
 
@@ -57,8 +57,6 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     """ Post detail view """
 
     queryset = Post.objects.all()
-    slug_field = 'id'
-    slug_url_kwarg = 'post_id'
     template_name = 'posts/detail.html'
 
 
