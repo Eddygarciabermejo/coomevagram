@@ -23,6 +23,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         """ Add user's posts to context """
+
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')

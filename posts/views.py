@@ -1,9 +1,8 @@
 """ Posts views """
 
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
 from datetime import datetime
 
@@ -60,25 +59,17 @@ class PostDetailView(LoginRequiredMixin, DetailView):
     template_name = 'posts/detail.html'
 
 
-@login_required
-def create_post(request):
-    """
-    Create a new post based on the Django Form.
-    :param request:
-    :return: render to feed template with post created.
-    """
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('posts:feed')
-    else:
-        form = PostForm()
+class CreatePostView(LoginRequiredMixin, CreateView):
+    """ Create a new post """
 
-    context = {
-        'profile': request.user.profile,
-        'user': request.user,
-        'form': form
-    }
+    form_class = PostForm
+    success_url = reverse_lazy('posts:feed')
+    template_name = 'posts/new.html'
 
-    return render(request=request, template_name='posts/new.html', context=context)
+    def get_context_data(self, **kwargs):
+        """ Add user and profile to context """
+
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['profile'] = self.request.user.profile
+        return context
