@@ -1,15 +1,15 @@
 """ Users views """
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import DetailView
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, FormView, UpdateView
 
 from posts.models import Post
-from users.forms import ProfileForm, SignupForm
+from users.forms import SignupForm, ProfileForm
+from users.models import Profile
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -28,6 +28,19 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         user = self.get_object()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
         return context
+
+
+class SignupView(FormView):
+    """ User sign up view """
+
+    form_class = SignupForm
+    success_url = reverse_lazy('users:login')
+    template_name = 'users/signup.html'
+
+    def form_valid(self, form):
+        """ Save form data """
+        form.save()
+        return super().form_valid(form)
 
 
 def login_view(request):
@@ -62,57 +75,18 @@ def logout_view(request):
     return redirect('users:login')
 
 
-def signup_view(request):
-    """
-    Create a user register associated with your profile.
-    :param request: form fields
-    :return: feed template or signup template with error.
-    """
-    if request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('users:login')
-    else:
-        form = SignupForm()
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    """ Update profile view """
 
-    context = {
-        'form': form
-    }
+    model = Profile
+    form_class = ProfileForm
+    template_name = 'users/update_profile.html'
 
-    return render(request=request, template_name='users/signup.html', context=context)
+    def get_object(self, queryset=None):
+        """ Return user's profile """
+        return self.request.user.profile
 
-
-@login_required
-def update_profile(request):
-    """
-    Call the template to update a user's profile.
-    :param request:
-    :return: detail template.
-    """
-    profile = request.user.profile
-
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            data = form.cleaned_data
-
-            profile.picture = data['picture']
-            profile.website = data['website']
-            profile.biography = data['biography']
-            profile.phone_number = data['phone_number']
-            profile.save()
-
-            messages.success(request, 'Profile updated correctly')
-            url = reverse('users:detail', kwargs={'username': request.user.username})
-            return redirect(url)
-    else:
-        form = ProfileForm()
-
-    context = {
-        'profile': profile,
-        'user': request.user,
-        'form': form
-    }
-
-    return render(request=request, template_name='users/update_profile.html', context=context)
+    def get_success_url(self):
+        """ Return to user's profile with a form is valid """
+        username = self.object.user.username
+        return reverse_lazy('users:detail', kwargs={'username': username})

@@ -5,15 +5,19 @@ from django.contrib.auth.models import User
 from users.models import Profile
 
 
-class ProfileForm(forms.Form):
+class ProfileForm(forms.ModelForm):
     """
     The fields are the names defined in the template manually and will be stored in the model.
     """
-
+    
     website = forms.URLField(max_length=200, required=False)
     biography = forms.CharField(max_length=500, required=True)
     phone_number = forms.CharField(max_length=20, required=False)
     picture = forms.ImageField(required=True)
+
+    class Meta:
+        model = Profile
+        fields = ['website', 'biography', 'phone_number', 'picture']
 
 
 class SignupForm(forms.Form):
@@ -27,6 +31,16 @@ class SignupForm(forms.Form):
     last_name = forms.CharField(min_length=2, max_length=50)
 
     email = forms.CharField(min_length=6, max_length=100, widget=forms.EmailInput())
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for f in self.fields:
+            self.fields[f].widget.attrs.update({'class': 'form-control', 'placeholder': self.snake_to_word(f)})
+
+    @staticmethod
+    def snake_to_word(word):
+        """ Change snake case to word """
+        return ' '.join(x.capitalize() or '_' for x in word.split('_'))
 
     def clean_username(self):
         """ Username must be unique """
