@@ -162,3 +162,5 @@ STATICFILES_FINDERS = [
 # Login Required
 # https://docs.djangoproject.com/en/2.0/topics/auth/default/#the-login-required-decorator
 LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = LOGIN_URL

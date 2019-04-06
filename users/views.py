@@ -1,9 +1,7 @@
 """ Users views """
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, FormView, UpdateView
 
@@ -43,36 +41,16 @@ class SignupView(FormView):
         return super().form_valid(form)
 
 
-def login_view(request):
-    """
-    Receive username and password to enter the feed template.
-    :param request:
-    :return: feed or login template.
-    """
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
+class LoginView(auth_views.LoginView):
+    """ Login view """
 
-        if user:
-            login(request, user)
-            return redirect('posts:feed')
-        else:
-            return render(request, 'users/login.html', {'error': 'Invalid username and password'})
-
-    return render(request, 'users/login.html')
+    template_name = 'users/login.html'
+    redirect_authenticated_user = True
 
 
-@login_required
-def logout_view(request):
-    """
-    Close a user's session.
-    :param request:
-    :return: login view.
-    """
-    logout(request)
-
-    return redirect('users:login')
+class LogoutView(auth_views.LogoutView):
+    """ Logout view """
+    pass
 
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
