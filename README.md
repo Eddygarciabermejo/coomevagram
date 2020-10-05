@@ -1,2 +1,2 @@
-# platzigram
-Platzi - Django - Platzigram
+# Coomevagram
+Coomevagram - Django - coomevagram
